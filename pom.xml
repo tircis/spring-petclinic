@@ -108,6 +108,16 @@
       <artifactId>spring-boot-devtools</artifactId>
       <optional>true</optional>
     </dependency>
+      <dependency>
+          <groupId>org.gama.stalactite</groupId>
+          <artifactId>orm</artifactId>
+          <version>1.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+          <groupId>org.gama.stalactite</groupId>
+          <artifactId>spring-integration</artifactId>
+          <version>1.0-SNAPSHOT</version>
+      </dependency>
   </dependencies>
 
   <build>
