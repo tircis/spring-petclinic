@@ -16,8 +16,6 @@
 
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -38,6 +36,8 @@ import org.springframework.samples.petclinic.visit.VisitRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Integration test of the Service and the Repository layer.
@@ -61,6 +61,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 
 @RunWith(SpringRunner.class)
+@ComponentScan(basePackages = {"org.springframework.samples.petclinic"})
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class ClinicServiceTests {
 
