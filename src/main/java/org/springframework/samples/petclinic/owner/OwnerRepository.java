@@ -15,10 +15,13 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.model.Person;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -58,6 +61,47 @@ public interface OwnerRepository { //extends Repository<Owner, Integer> {
      * @param owner the {@link Owner} to save
      */
     void save(Owner owner);
-
-
+    
+    void save(RawOwner owner);
+    
+    /**
+     * A version of {@link Owner} to represent user input on creation and update of a owner.
+     * Because this should be a different model than the business one because it is not the same use case as having visits, pets, etc. Reusing
+     * {@link Owner} is made for comfort and Spring Data gently accepts to persist it even if its relations are not cleanly set, for instance pets one,
+     * which is interpreted as a removal of pets by Stalactite which then tries to cut the relation (not allowed by database design: a pet must
+     * have a owner, owner_id is mandatory)
+     */
+    class RawOwner extends Person {
+        private String address;
+        
+        private String city;
+        
+        @NotEmpty
+        @Digits(fraction = 0, integer = 10)
+        private String telephone;
+        
+        public String getAddress() {
+            return this.address;
+        }
+        
+        public void setAddress(String address) {
+            this.address = address;
+        }
+        
+        public String getCity() {
+            return this.city;
+        }
+        
+        public void setCity(String city) {
+            this.city = city;
+        }
+        
+        public String getTelephone() {
+            return this.telephone;
+        }
+        
+        public void setTelephone(String telephone) {
+            this.telephone = telephone;
+        }
+    }
 }
