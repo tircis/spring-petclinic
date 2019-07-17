@@ -20,8 +20,10 @@ import java.util.List;
 import org.gama.stalactite.persistence.engine.ColumnOptions.IdentifierPolicy;
 import org.gama.stalactite.persistence.engine.PersistenceContext;
 import org.gama.stalactite.persistence.engine.cascade.JoinedTablesPersister;
+import org.gama.stalactite.persistence.structure.Column;
 import org.gama.stalactite.persistence.structure.Table;
 import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,8 @@ public class PetRepositoryStit implements PetRepository {
     private final JoinedTablesPersister<PetType, Object, Table> petTypePersister;
     
     public PetRepositoryStit(PersistenceContext persistenceContext) {
+        Table visitsTable = new Table("visits");
+        Column<Table, Integer> petid = visitsTable.addColumn("pet_id", Integer.class);
         persister = entityBuilder(Pet.class, Integer.class)
             .joinColumnNamingStrategy(memberDefinition -> memberDefinition.getName() + "_id")
             .add(Pet::getId).identifier(IdentifierPolicy.AFTER_INSERT)
@@ -62,6 +66,10 @@ public class PetRepositoryStit implements PetRepository {
                     .getConfiguration())
                 .add(Owner::getFirstName, "first_name")
                 .add(Owner::getLastName, "last_name"), new Table("owners"))
+            .addOneToManySet(Pet::getVisitsInternal, entityBuilder(Visit.class, Integer.class)
+                    .add(Visit::getId).identifier(IdentifierPolicy.AFTER_INSERT)
+                    .add(Visit::getDescription)
+                , visitsTable).mappedBy(petid)
             .build(persistenceContext, new Table("pets"));
         // PetType is available in the PersistenceContext because it was added by Pet mapping
         petTypePersister = (JoinedTablesPersister) persistenceContext.getPersister(PetType.class);
