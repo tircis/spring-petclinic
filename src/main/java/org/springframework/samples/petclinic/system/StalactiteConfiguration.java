@@ -1,6 +1,6 @@
 package org.springframework.samples.petclinic.system;
 
-import org.gama.sql.spring.PlatformTransactionManagerConnectionProvider;
+import org.gama.stalactite.sql.spring.PlatformTransactionManagerConnectionProvider;
 import org.gama.stalactite.persistence.engine.PersistenceContext;
 import org.gama.stalactite.persistence.sql.HSQLDBDialect;
 import org.springframework.context.annotation.Bean;
